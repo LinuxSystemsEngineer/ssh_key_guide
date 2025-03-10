@@ -1,5 +1,3 @@
-
-
 # Public and Private Keypairs: A Secure SSH Key Setup Guide
 
 This guide provides 10 steps to set up SSH key authentication using an ed25519 public and private key pair. It is helpful for end-users who favor reading the work instructions in plain text instead of running the Python3 program.
@@ -12,13 +10,22 @@ This guide assumes that the remote machine uses the username `local_account_name
 
 ---
 
+**Startup Requirements:**
+
+If you are running Ubuntu linux please install these packages:
+```bash
+sudo apt update && sudo apt install git vim openssh-server
+```
+
+
+
 ## Step 1: REMOTE TEST MACHINE = Enable SSH with Password Authentication
 Allow SSH access using a password on the REMOTE TEST MACHINE.
 
 ---
 Edit the SSH configuration file:
 ```bash
-sudo nano /etc/ssh/sshd_config
+sudo vim /etc/ssh/sshd_config
 ```
 ---
 Locate the line:
@@ -38,11 +45,22 @@ Set it to 'yes' and then save the file.
 
 ---
 
-Restart the SSH [daemon/process/service]
+Restart the SSH [daemon/process/service] on modern linux systems
 
 ```bash
 sudo systemctl restart sshd
 ```
+
+---
+
+Restart the SSH [daemon/process/service] on legacy linux systems
+
+```bash
+sudo systemctl restart ssh
+```
+
+---
+
 
 💡 The REMOTE TEST MACHINE now allows password-based SSH connections.
 
@@ -59,10 +77,10 @@ cd /etc/sudoers.d
 ```
 ---
 
-Use Nano to create and edit a file called local_account_name
+Use vim to create and edit a file called local_account_name
 
 ```bash
-nano local_account_name
+vim local_account_name
 ```
 ---
 
@@ -172,7 +190,7 @@ Open the SSH config file:
 
 
 ```bash
-sudo nano /etc/ssh/sshd_config
+sudo vim /etc/ssh/sshd_config
 ```
 ---
 
@@ -193,12 +211,20 @@ Save the file and exit.
 
 ---
 
-## Step 7: REMOTE TEST MACHINE = Save & Restart SSH
+## Step 7: REMOTE TEST MACHINE = Restart SSH
 
-Run:
+Restart the SSH [daemon/process/service] on modern linux systems
 
 ```bash
 sudo systemctl restart sshd
+```
+
+---
+
+Restart the SSH [daemon/process/service] on legacy linux systems
+
+```bash
+sudo systemctl restart ssh
 ```
 
 Now SSH enforces key authentication.
@@ -214,7 +240,23 @@ From the LOCALHOST SERVER, run:
 ssh local_account_name@192.168.4.11
 ```
 
-If you log in without a password, the key will work.
+If you log in without a password, the key works.
+
+---
+
+If you are still being prompted for a password try this:
+
+```bash
+eval "$(ssh-agent -s)" && ssh-add ~/.ssh/my_uuid_key
+```
+
+And also point to the ssh keypair you are want to auth with this:
+
+```bash
+ssh -i ~/.ssh/my_uuid_key local_account_name@192.168.4.11
+```
+
+If you log in without a password, the key works.
 
 ---
 
