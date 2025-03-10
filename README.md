@@ -14,7 +14,7 @@ This guide assumes that the remote machine uses the username `local_account_name
 
 If you are running Ubuntu linux please install these packages:
 ```bash
-sudo apt update && sudo apt install git vim openssh-server
+sudo apt update && sudo apt install git vim openssh-server -y
 ```
 
 
